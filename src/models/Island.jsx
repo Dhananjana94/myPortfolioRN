@@ -14,9 +14,53 @@ import islandScene from '../assets/3d/pirate_island.glb';
 
 
 
-const Island = (props) => {
+const Island = ({isRotatin,setIsRotating,...props}) => {
     const islandRef = useRef();
+
+    const{gl,viewPort} = useThree() //get access threeJs renderer and viewport
     const { nodes, materials } = useGLTF(islandScene) //refer island scene
+
+    const lastX = useRef(0);
+    const rotationSpeed = useRef(0);
+    const dampingFactor = 0.95; // set how fast it moving after rotation
+
+    const handlePointerDown =(e) => {
+        e.stopProgation();
+        e.preventDefault();
+        setIsRotating(true);
+
+        //set it is mouse event or touch event
+        const clientX = e.touches
+        ? e.touches[0].clientX
+        : e.clientX;
+
+        lastX.currentTime = clientX;
+    }
+//set what happen when release the mouse
+    const handlePointerUp =(e) => {
+        e.stopProgation();
+        e.preventDefault();
+        setIsRotating(false);
+
+        const delta = (clientX - lastX.current) / viewPort.width;
+
+        islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+        lastX.current = clientX;
+        rotationSpeed.current = delta * 0.01 * Math.PI;
+
+      
+    }
+
+    const handlePointerMove =(e) => {
+        e.stopProgation();
+        e.preventDefault();
+
+        if(isRotatin){
+            handlePointerUp(e);
+        }
+        
+    }
+
     return (
         <a.group ref = {islandRef} {...props} >
             <group position={[-1.342, 0, 0.216]} rotation={[-Math.PI / 2, 0, 0]}>
