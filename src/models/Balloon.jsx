@@ -5,11 +5,12 @@ import { useGLTF } from '@react-three/drei';
 
 const Balloon = ({isRotating, ...props}) => {
 
-    const {scene,animation} = useGLTF(ballonScene);
+    const {scene,animations} = useGLTF(ballonScene);
 
   return (
     <mesh {...props}
-     position={[1,1,1]} scale={[0.05,0.05,0.05]}>
+     position={[1,0.5,2]} 
+     scale={[0.05,0.05,0.05]}>
         <primitive object={scene} />
     </mesh>
   )

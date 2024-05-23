@@ -14,55 +14,141 @@ import islandScene from '../assets/3d/pirate_island.glb';
 
 
 
-const Island = ({isRotatin,setIsRotating,...props}) => {
-    const islandRef = useRef();
+const Island = ({ isRotating, setIsRotating,setCurrentStage, ...props}) => {
 
-    const{gl,viewPort} = useThree() //get access threeJs renderer and viewport
-    const { nodes, materials } = useGLTF(islandScene) //refer island scene
+    const islandRef = useRef();
+    const { gl, viewport } = useThree(); //get access threeJs renderer and viewport
+    const { nodes, materials } = useGLTF(islandScene); //refer island scene
 
     const lastX = useRef(0);
     const rotationSpeed = useRef(0);
     const dampingFactor = 0.95; // set how fast it moving after rotation
 
-    const handlePointerDown =(e) => {
-        e.stopProgation();
+    //with handle pointer functions we set move ability with mouse move
+    const handlePointerDown = (e) => {
+       
+        e.stopPropagation();
         e.preventDefault();
         setIsRotating(true);
 
         //set it is mouse event or touch event
-        const clientX = e.touches
-        ? e.touches[0].clientX
-        : e.clientX;
+        const clientX = e.touches? e.touches[0].clientX : e.clientX;
 
         lastX.currentTime = clientX;
     }
-//set what happen when release the mouse
-    const handlePointerUp =(e) => {
-        e.stopProgation();
+    //set what happen when release the mouse
+    const handlePointerUp = (e) => {
+       
+        e.stopPropagation();
         e.preventDefault();
         setIsRotating(false);
-
-        const delta = (clientX - lastX.current) / viewPort.width;
-
-        islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-        lastX.current = clientX;
-        rotationSpeed.current = delta * 0.01 * Math.PI;
-
-      
     }
 
-    const handlePointerMove =(e) => {
-        e.stopProgation();
+    const handlePointerMove = (e) => {
+        console.log("handlePointer Move ...............");
+        e.stopPropagation();
         e.preventDefault();
 
-        if(isRotatin){
-            handlePointerUp(e);
+        if (isRotating) {
+            
+            console.log('Pointer move event');
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+
+            const delta = (clientX - lastX.current) / viewport.width;
+
+            // islandRef.current.rotation.y += delta * 0.01 * Math.PI; //update island rotation bse on the mouse
+            if (islandRef.current) {
+                islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+                console.log(`Rotation updated: ${islandRef.current.rotation.y}`);
+              }
+            lastX.current = clientX;
+            rotationSpeed.current = delta * 0.01 * Math.PI; // Manage rotation speed
+    
         }
-        
+
+    };
+
+    //add ability to move with keyboard
+    const handleKeyDown = (e) => {
+       
+        if (islandRef.current) {
+          if (e.key === 'ArrowLeft') {
+            if (!isRotating) setIsRotating(true);
+            islandRef.current.rotation.y += 0.01 * Math.PI;
+          } else if (e.key === 'ArrowRight') {
+            if (!isRotating) setIsRotating(true);
+            islandRef.current.rotation.y -= 0.01 * Math.PI;
+          }
+        }
+      };
+
+    const handleKeyUp = (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            setIsRotating(false);
+        }
     }
 
+    useEffect(() => {
+        // why we add canves here because when we touch canves are instead of dom it shout be work as expected (use only for mouse events)
+        console.log(`isRotatin state changed: ${isRotating}`);
+        const canvas = gl.domElement;
+        canvas.addEventListener('pointerdown', handlePointerDown);
+        canvas.addEventListener('pointermove', handlePointerMove);
+        canvas.addEventListener('pointerup', handlePointerUp);
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            canvas.removeEventListener('pointerdown', handlePointerDown);
+            canvas.removeEventListener('pointermove', handlePointerMove);
+            canvas.removeEventListener('pointerup', handlePointerUp);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        }
+
+    }, [gl, handlePointerDown, handlePointerUp, handlePointerMove]);
+    
+
+    useFrame(() => {
+        if (!isRotating) {
+            rotationSpeed.current *= dampingFactor;
+
+            if (Math.abs(rotationSpeed.current) < 0.001) {
+                rotationSpeed.current = 0;
+
+            }
+            islandRef.current.rotation.y += rotationSpeed.current;
+        }
+        else {
+            const rotation = islandRef.current.rotation.y;
+
+            const normalizedRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+
+            // Set the current stage based on the island's orientation
+            //when stage is change it will show different things
+            switch (true) {
+                case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
+                    setCurrentStage(4);
+                    break;
+                case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
+                    setCurrentStage(3);
+                    break;
+                case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
+                    setCurrentStage(2);
+                    break;
+                case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
+                    setCurrentStage(1);
+                    break;
+                default:
+                    setCurrentStage(null);
+            }
+        }
+    })
+
+
+
     return (
-        <a.group ref = {islandRef} {...props} >
+        <a.group ref={islandRef} {...props} >
             <group position={[-1.342, 0, 0.216]} rotation={[-Math.PI / 2, 0, 0]}>
                 <group rotation={[Math.PI / 2, 0, 0]}>
                     <group
