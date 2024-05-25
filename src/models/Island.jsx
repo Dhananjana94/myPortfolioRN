@@ -64,11 +64,11 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
 
             // islandRef.current.rotation.y += delta * 0.01 * Math.PI; //update island rotation bse on the mouse
             if (islandRef.current) {
-                islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+                islandRef.current.rotation.y += delta * 0.005 * Math.PI;
                 console.log(`Rotation updated: ${islandRef.current.rotation.y}`);
             }
             lastX.current = clientX;
-            rotationSpeed.current = delta * 0.01 * Math.PI; // Manage rotation speed
+            rotationSpeed.current = delta * 0.005 * Math.PI; // Manage rotation speed
 
         }
 
@@ -80,10 +80,10 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
         if (islandRef.current) {
             if (e.key === 'ArrowLeft') {
                 if (!isRotating) setIsRotating(true);
-                islandRef.current.rotation.y += 0.01 * Math.PI;
+                islandRef.current.rotation.y += 0.002 * Math.PI;
             } else if (e.key === 'ArrowRight') {
                 if (!isRotating) setIsRotating(true);
-                islandRef.current.rotation.y -= 0.01 * Math.PI;
+                islandRef.current.rotation.y -= 0.002 * Math.PI;
             }
         }
     };

@@ -6,6 +6,7 @@ import Island from '../models/Island'
 import Sky from '../models/Sky'
 import Bird from '../models/Bird'
 import Balloon from '../models/Balloon'
+import Boat from '../models/Boat'
 {/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
           Popup
         </div> */}
@@ -19,9 +20,9 @@ const Home = () => {
   const adjustIslandForScreen = () => {
     let screenScale = null;
     let screenPosition = [0, -8, -40] // adjust positioning the model inside the screen
-    let rotation = [0.1, 4.7, 0.05];
+    let rotation = [0.1, 4.7, 0.06];
     //used to check if the width of the browser's viewport
-    if (window.innerWidth > 768) {
+    if (window.innerWidth < 768) {
       screenScale = [0.8, 0.8, 0.8];
 
     }
@@ -38,7 +39,7 @@ const Home = () => {
     let screenScale, screenPosition;
 
     //used to check if the width of the browser's viewport
-    if (window.innerWidth > 768) {
+    if (window.innerWidth < 768) {
       screenScale = [1.5, 1.5, 1.5];
       screenPosition = [0, -1.5, 0]
 
@@ -51,6 +52,24 @@ const Home = () => {
     return [screenScale, screenPosition];
   }
   const [baloonScale, baloonPosition] = adjustBaloonForScreen();
+
+  const adjustBoatForScreen = () => {
+    let screenScale, screenPosition;
+
+    //used to check if the width of the browser's viewport
+    if (window.innerWidth < 768) {
+      screenScale = [1,1,1];
+      screenPosition = [0, -1, 0]
+
+    }
+    else {
+      screenScale = [3, 3, 3]; // for large pixel screen 
+      screenPosition = [0, -4, -4]
+    }
+
+    return [screenScale, screenPosition];
+  }
+  const [boatScale, boatPosition] = adjustBoatForScreen();
 
   return (
     <section className="w-full h-screen relative">
@@ -100,9 +119,9 @@ const Home = () => {
           <Boat
 
             isRotating={isRotating}
-            baloonScale={baloonScale}
-            baloonPosition={baloonPosition}
-            rotation={[0, 20, 0]}
+            baloonScale={boatScale}
+            baloonPosition={boatPosition}
+            rotation={[0, 20.5, 0]}
 
           />
         </Suspense>

@@ -11,4 +11,4 @@ const Bird = () => {
   )
 }
 
-export default Bird
+export default Bird 
