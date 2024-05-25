@@ -11,15 +11,15 @@ import Balloon from '../models/Balloon'
         </div> */}
 
 const Home = () => {
-  const[currentStage,setCurrentStage] = useState(1);
+  const [currentStage, setCurrentStage] = useState(1);
   const [isRotating, setIsRotating] = useState(false)
 
 
   //adjustIslandForScreen make island sceen match for all screens
   const adjustIslandForScreen = () => {
     let screenScale = null;
-    let screenPosition = [0, -7, -35] // adjust positioning the model inside the screen
-    let rotation = [0.1, 4.7, 0];
+    let screenPosition = [0, -8, -40] // adjust positioning the model inside the screen
+    let rotation = [0.1, 4.7, 0.05];
     //used to check if the width of the browser's viewport
     if (window.innerWidth > 768) {
       screenScale = [0.8, 0.8, 0.8];
@@ -60,8 +60,8 @@ const Home = () => {
 
         <Suspense fallback={<Loader />}>
           <directionalLight
-            position={[3, 1, 1]}
-            intensity={1}
+            position={[3, 2, 1]}
+            intensity={1.5}
           />
           <ambientLight
             intensity={0.2}
@@ -70,11 +70,14 @@ const Home = () => {
           <hemisphereLight
             skyColor="#6DC5D1"
             groundColor={"#000000"}
-            intensity={2}
+            intensity={1}
           />
+
+
           <Bird />
 
-          <Sky />
+          <Sky
+            isRotating={isRotating} />
 
           <Island
             position={islandPosition}
@@ -91,6 +94,16 @@ const Home = () => {
             baloonScale={baloonScale}
             baloonPosition={baloonPosition}
             rotation={[0, 20, 0]}
+
+          />
+
+          <Boat
+
+            isRotating={isRotating}
+            baloonScale={baloonScale}
+            baloonPosition={baloonPosition}
+            rotation={[0, 20, 0]}
+
           />
         </Suspense>
 

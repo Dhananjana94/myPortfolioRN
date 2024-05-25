@@ -9,8 +9,7 @@ const Balloon = ({isRotating, ...props}) => {
 
   return (
     <mesh {...props}
-     position={[1,0.5,2]} 
-     scale={[0.05,0.05,0.05]}>
+     position={[3,0.2,-1]} scale={[0.03,0.03,0.03]}>
         <primitive object={scene} />
     </mesh>
   )
