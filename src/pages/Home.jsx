@@ -7,9 +7,8 @@ import Sky from '../models/Sky'
 import Bird from '../models/Bird'
 import Balloon from '../models/Balloon'
 import Boat from '../models/Boat'
-{/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
-          Popup
-        </div> */}
+import HomeInfo from '../components/HomeInfo'
+
 
 const Home = () => {
   const [currentStage, setCurrentStage] = useState(1);
@@ -19,7 +18,7 @@ const Home = () => {
   //adjustIslandForScreen make island sceen match for all screens
   const adjustIslandForScreen = () => {
     let screenScale = null;
-    let screenPosition = [0, -8, -40] // adjust positioning the model inside the screen
+    let screenPosition = [0, -8, -50] // adjust positioning the model inside the screen
     let rotation = [0.1, 4.7, 0.06];
     //used to check if the width of the browser's viewport
     if (window.innerWidth < 768) {
@@ -70,9 +69,14 @@ const Home = () => {
     return [screenScale, screenPosition];
   }
   const [boatScale, boatPosition] = adjustBoatForScreen();
-
+ 
   return (
     <section className="w-full h-screen relative">
+
+      <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
+          {currentStage && <HomeInfo currentStage = {currentStage}/>}
+        </div>
+
       <Canvas className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`} //enable cursor grabbing
         camera={{ near: 0.1, far: 1000 }}
       >
@@ -94,7 +98,7 @@ const Home = () => {
 
 
           <Bird />
-
+          
           <Sky
             isRotating={isRotating} />
 

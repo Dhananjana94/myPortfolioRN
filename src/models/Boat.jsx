@@ -30,7 +30,7 @@ const Boat = ({isRotating, ...props}) => {
         }
     },[]);
 
-    const position = isLargeScreen ?[4,-7.8,-1] : [5,-7,-5];
+    const position = isLargeScreen ?[4,-7.8,-8] : [5,-7,-15];
   return (
     <mesh {...props} ref={ref}
      position={position} scale={[0.004,0.004,0.004]}>
