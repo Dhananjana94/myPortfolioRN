@@ -4,6 +4,8 @@ import emailJs from '@emailjs/browser'
 import { Canvas } from '@react-three/fiber';
 import Boy from '../models/Boy'
 import Loader from '../components/Loader';
+import useAlert from '../hooks/useAlert';
+import Alert from '../components/Alert';
 
 
 const Contact = () => {
@@ -11,7 +13,9 @@ const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [isLoading, setLoading] = useState(false);
   const [currentAnimation, setAnimation] = useState('idle');
-  const [animationInterval, setAnimationInterval] = useState(null);
+ // const [animationInterval, setAnimationInterval] = useState(null);
+
+ const{alert,showAlert,hideAlert} = useAlert();
 
   //handleChange update all the property of form
   const handleChange = (e) => {
@@ -41,8 +45,11 @@ const Contact = () => {
     ).then(() => {
       setLoading(false);
       //show success message
+      showAlert({show: true,text:'Message sent successfully',type:'success'});
+
       //hide alert
       setTimeout(() => {
+        hideAlert();
         setAnimation('idle');
         setForm({ name: '', email: '', message: '' });
       },[3000])
@@ -51,16 +58,17 @@ const Contact = () => {
     }).catch(err => {
       setLoading(false);
       console.log(err);
+      showAlert({show: true,text:"Didn't get the message",type:'danger'});
       //show error message
     })
   }; //handle react mail service
 
   const handleFocus = () => setAnimation('idle'); //handle models when you click on the feild of form
   const handleBlur = () => {
-    if (animationInterval) {
-      clearInterval(animationInterval);
-      setAnimationInterval(null);
-    }
+    // if (animationInterval) {
+    //   clearInterval(animationInterval);
+    //   setAnimationInterval(null);
+    // }
     setAnimation('tchau');
   }; //handle models when you click out the feild of form
 
@@ -75,6 +83,9 @@ const Contact = () => {
 
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
+
+      {alert.show && <Alert {...alert}/>}
+      {/* <Alert text="test"/> */}
 
       <div className="flex-1 min-w-[50%] flex flex-col">
         <h1 className="head-text">Get in touch</h1>
@@ -103,9 +114,10 @@ const Contact = () => {
           </label>
 
           <label className='text-black-500 font-semibold'> Your Message
-            <textarea  name='mesage' placeholder="Let's talk" 
+            <textarea  name='message' placeholder="Let's talk" 
               rows={4}
-              className='textarea' 
+              className='textarea'
+              required 
               value={form.message}
               onChange={handleChange}
               onFocus={handleFocus}
