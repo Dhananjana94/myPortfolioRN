@@ -5,7 +5,7 @@ import { Home,About,Projects,Contact } from './pages';
 import Navbar from './components/Navbar';
 const App = () => {
   return (
-    <main className='bg-slate-300/30 h-[100vh]'>
+    <main className='bg-slate-300/30 h-full'>
         <Router>
             <Navbar/>
             <Routes>

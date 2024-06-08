@@ -40,7 +40,7 @@ const renderContent = {
     ),
     4: (
         <InfoBox
-        text="Feel free to contact"
+        text="Any questions or need further information,please don't hesitate to reach out to me"
         link="/contact"
         btnText="Let's talk"
         />
