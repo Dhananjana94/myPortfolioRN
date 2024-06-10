@@ -17,7 +17,6 @@ import illustrator from './illustrator.svg'
 import linkedin from './linkedin.svg'
 import twitter from './twitter.svg'
 import susara from './susara.png'
-import estate from './estate.svg'
 import reddy from './reddy.png'
 import chat from './chat.png'
 import sign from './sign.png'
@@ -46,7 +45,6 @@ export {
     linkedin,
     twitter,
     susara,
-    estate,
     reddy,
     chat,
     sign,
