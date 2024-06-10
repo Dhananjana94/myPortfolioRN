@@ -51,7 +51,7 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
     }
 
     const handlePointerMove = (e) => {
-        console.log("handlePointer Move ...............");
+       
         e.stopPropagation();
         e.preventDefault();
 

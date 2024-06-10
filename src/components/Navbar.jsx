@@ -8,15 +8,15 @@ const Navbar = () => {
         </NavLink>
 
         <nav className="flex text-lg gap-7 font-medium">
-            <NavLink to='/about' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-black-500'}>
+            <NavLink to='/about' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-green-700'}>
                 About
             </NavLink>
 
-            <NavLink to='/projects' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-black-500'}>
+            <NavLink to='/projects' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-green-700'}>
                 Projects
             </NavLink>
 
-            <NavLink to='/contact' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-black-500'}>
+            <NavLink to='/contact' className={({ isActive }) => isActive ? 'text-gray-600' : 'text-green-700'}>
                 Contact
             </NavLink>
 

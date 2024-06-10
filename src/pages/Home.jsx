@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react'
+import { useState, Suspense,useRef,useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 import Loader from '../components/Loader'
@@ -8,17 +8,33 @@ import Bird from '../models/Bird'
 import Balloon from '../models/Balloon'
 import Boat from '../models/Boat'
 import HomeInfo from '../components/HomeInfo'
+import EarthRn from '../assets/music/EarthRn.mp3'
+import { soundoff, soundon } from '../assets/icons'
 
 
 const Home = () => {
+  const audioRef = useRef(new Audio(EarthRn));
+  audioRef.current.volume = 0.3;
+  audioRef.current.loop = true;
   const [currentStage, setCurrentStage] = useState(1);
   const [isRotating, setIsRotating] = useState(false)
+  const[isPlayingMusic,setIsPlayingMusic] = useState(true);
 
+
+  useEffect(() => {
+    if(isPlayingMusic){
+      audioRef.current.play();
+    }
+    return ()=>{
+      audioRef.current.pause();
+    }
+
+  },[isPlayingMusic])
 
   //adjustIslandForScreen make island sceen match for all screens
   const adjustIslandForScreen = () => {
     let screenScale = null;
-    let screenPosition = [0, -8, -50] // adjust positioning the model inside the screen
+    let screenPosition = [0, -8, -70] // adjust positioning the model inside the screen
     let rotation = [0.1, 4.7, 0.06];
     //used to check if the width of the browser's viewport
     if (window.innerWidth < 768) {
@@ -131,6 +147,14 @@ const Home = () => {
         </Suspense>
 
       </Canvas>
+      <div className='absolute bottom-2 left-2'>
+          <img 
+            src={!isPlayingMusic ? soundoff : soundon}
+            alt="sound" 
+            className='w-10 h-10 cursor-pointer object-contain'
+            onClick={() =>setIsPlayingMusic(!isPlayingMusic)}
+          />
+      </div>
     </section>
 
   )

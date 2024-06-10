@@ -14,7 +14,7 @@ const sky = ({isRotating}) => {
     });
 
   return (
-    <mesh ref={skyRef} scale={[1,1,1]}>
+    <mesh ref={skyRef} scale={[0.8,0.8,0.8]} rotation={[0,0,-1]}>
         <primitive object={sky.scene} />
     </mesh>
   )
