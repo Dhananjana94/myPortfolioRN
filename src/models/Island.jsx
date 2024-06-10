@@ -57,7 +57,6 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
 
         if (isRotating) {
 
-            console.log('Pointer move event');
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
 
             const delta = (clientX - lastX.current) / viewport.width;
@@ -65,7 +64,7 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
             // islandRef.current.rotation.y += delta * 0.01 * Math.PI; //update island rotation bse on the mouse
             if (islandRef.current) {
                 islandRef.current.rotation.y += delta * 0.005 * Math.PI;
-                console.log(`Rotation updated: ${islandRef.current.rotation.y}`);
+            
             }
             lastX.current = clientX;
             rotationSpeed.current = delta * 0.005 * Math.PI; // Manage rotation speed
@@ -95,7 +94,7 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
     }
 
     const handleWheel = (e) => {
-        console.log('wheel', e);
+    
         e.preventDefault();
         const newZoom = Math.min(Math.max(zoom + e.deltaY * zoomSpeed, minZoom), maxZoom);
         setZoom(newZoom);
@@ -103,7 +102,6 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
 
     useEffect(() => {
         // why we add canves here because when we touch canves are instead of dom it shout be work as expected (use only for mouse events)
-        console.log(`isRotatin state changed: ${isRotating}`);
         const canvas = gl.domElement;
         canvas.addEventListener('pointerdown', handlePointerDown);
         canvas.addEventListener('pointermove', handlePointerMove);

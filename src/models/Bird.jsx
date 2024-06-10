@@ -6,7 +6,6 @@ import {MathUtils} from 'three';
 
 const Bird = () => {
   const { scene, animations } = useGLTF(birdScene);
-  console.log(animations);
   const birdRef = useRef();
   const { actions } = useAnimations(animations, birdRef);
   const targetRotationY = useRef(0);
@@ -22,13 +21,11 @@ const Bird = () => {
     birdRef.current.position.y = Math.sin(clock.elapsedTime) * 0.2 + 2
 
     //first check bird reached a certain end point and rotate bird 
-    console.log(camera.position.x);
-    console.log(birdRef.current.position.x);
+
     if (birdRef.current.position.x < camera.position.x - 10) {
-      console.log('bird reached end point');
+     
       birdRef.current.rotation.y = Math.PI;
 
-      console.log('bird current rotation 2 ----------------' + birdRef.current.rotation.y);
     }
     else if (birdRef.current.position.x > camera.position.x + 10) {
       birdRef.current.rotation.y = 0;
